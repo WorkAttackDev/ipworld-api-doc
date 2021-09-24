@@ -139,14 +139,14 @@
           Em Produção
         </h2>
         <p>
-          Para colocar a aplicação em produção, primeramente temos que verificar
-          se a pasta <b>(multipla)</b> que contem todos so arquivos. Depois
-          garatir que temos o
+          Para colocar a aplicação em produção, primeiramente temos que
+          verificar se a pasta do projecto se encontra na raiz da maquina.
+          Depois garatir que temos o
           <a href="https://pm2.keymetrics.io/">PM2</a> intalado na maquina para
           gerenciar a aplicação. Após isso devemos aceder ao <b>MySQL</b> da
           maquina e criar o usuário com privilégios de acesso e o banco de dados
           que vai ser usado para fazer a validação dos pagamento. Após o banco
-          de dados estar configurado devmos rodar o comando
+          de dados estar configurado devemos rodar o comando
           <code>`npm run migrate:prod:up`</code>, para rodar a migração que cria
           as tabelas.
         </p>
