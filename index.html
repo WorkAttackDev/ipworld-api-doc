@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IPWorld API Documentação</title>
+  </head>
+  <body class="relative" x-data="{ isSidebarOpen: false }">
+    <!-- Header Start -->
+    <header class="relative z-10 flex shadow-sm">
+      <div class="flex items-center p-8">
+        <h1 class="text-xl font-bold text-gray-800">DOCS</h1>
+      </div>
+    </header>
+    <!-- Header End -->
+    <button
+      class="fixed bottom-4 right-4 p-4 text-white bg-gray-800 rounded-full"
+      @click="isSidebarOpen = ! isSidebarOpen"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-8 w-8 m-auto"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"
+        />
+      </svg>
+    </button>
+    <!-- Main Start -->
+    <main
+      class="flex"
+      x-data="{ sections: [{text: 'Introdução', href: 'introducao'}, {text: 'Funcionalidade do Sistema', href: 'funcionalidade-do- sistema'}, {text: 'Em Produção', href: 'em-Producao'}, {text: 'Logs do Serviço', href: 'logs-do-servico'}] }"
+    >
+      <!-- Main > Aside Start -->
+      <aside
+        class="
+          fixed
+          top-0
+          left-0
+          flex flex flex-col
+          h-screen
+          w-1/2
+          bg-gray-100
+          shadow-sm
+          md:sticky
+        "
+        x-show="isSidebarOpen"
+        x-transition:enter="transition transform-gpu ease-out duration-300"
+        x-transition:enter-start="-translate-x-full"
+        x-transition:enter-end="transform translate-x-0"
+        x-transition:leave="transition-all transform-gpu ease-in duration-300"
+        x-transition:leave-start="translate-x-0"
+        x-transition:leave-end="-translate-x-full"
+      >
+        <header class="flex items-center p-8 bg-white shadow-sm">
+          <h1 class="text-xl uppercase font-bold text-gray-800">Menu</h1>
+        </header>
+        <nav class="flex flex flex-col p-8">
+          <template x-for="section in sections">
+            <a
+              x-bind:href="'#'+section.href"
+              class="
+                text-2xl
+                mb-4
+                text-gray-500
+                no-underline
+                font-medium
+                last:mb-0
+              "
+              x-text="'# '+section.text"
+            >
+            </a>
+          </template>
+        </nav>
+      </aside>
+      <!-- Main > Aside End -->
+      <!-- Main > Section Start -->
+      <section class="p-8 transition-all shadow-sm">
+        <h2 x-text="sections[0].text" x-bind:id="sections[0].href">
+          Introdução
+        </h2>
+        <p>
+          Esta documentação serve de suporte para a
+          <b>API de pagamento</b> que faz a integração do Splinx e o Proxypay.
+        </p>
+        <br />
+        <h2>Requitos de Programador</h2>
+        <h5>
+          Para dar suporte a esta API o programador precisa saber as seguintes
+          tecnologias:
+        </h5>
+        <ul>
+          <li>
+            TypeScript/Javascript (Node.js runtime) - Linguagem de programação
+          </li>
+          <li>
+            <a href="https://expressjs.com/">Express</a> - Backend Framework
+          </li>
+          <li>
+            <a href="https://knexjs.org/">Knex</a> - Biblioteca para manipulação
+            do banco de dados.
+          </li>
+          <li><a href="https://www.mysql.com/">MySQL</a> - Banco de dados</li>
+          <li>
+            <a href="https://pm2.keymetrics.io/">PM2</a> - Gerenciador de
+            processos
+          </li>
+          <li>Conhecimento de Webhooks</li>
+        </ul>
+        <p>
+          Para mais informações consultar os arquivos de configuração
+          (package.json).
+        </p>
+        <br />
+        <h2 x-text="sections[1].text" x-bind:id="sections[1].href">
+          Funcionalidade do Sistema
+        </h2>
+        <p>
+          O sistema tem a funcionalidade de criar referências no
+          <b>Proxypay</b> sempre que, apartir do <b>Splinx</b> for criado um
+          clinte (Costumer). E sempre que um cliente fizer um pagamento à uma
+          referência através do ATM ou Internet Banking, a API registra no
+          <b>Splinx</b>, na secção de billing do cliente que efectuou o
+          pagamento.
+        </p>
+        <p>
+          Para isso a API escuta os eventos de criação de conta do
+          <b>Splinx</b> e de pagamento do <b>Proxypay</b> via <b>Webhooks</b>.
+        </p>
+        <br />
+        <h2 x-text="sections[2].text" x-bind:id="sections[2].href">
+          Em Produção
+        </h2>
+        <p>
+          Para colocar a aplicação em produção, primeramente temos que verificar
+          se a pasta <b>(multipla)</b> que contem todos so arquivos. Depois
+          garatir que temos o
+          <a href="https://pm2.keymetrics.io/">PM2</a> intalado na maquina para
+          gerenciar a aplicação. Após isso devemos aceder ao <b>MySQL</b> da
+          maquina e criar o usuário com privilégios de acesso e o banco de dados
+          que vai ser usado para fazer a validação dos pagamento. Após o banco
+          de dados estar configurado devmos rodar o comando
+          <code>`npm run migrate:prod:up`</code>, para rodar a migração que cria
+          as tabelas.
+        </p>
+        <p>
+          Depois rodar o comando <code>`npm i`</code> ou
+          <code>`npm install`</code> para instalar as dependências do projecto.
+        </p>
+        <p>
+          Após instalar as dependências é necessário rodar o comando
+          <code>`npm run build`</code> para construir os arquivos de produção.
+          Com o processo de vai ser gerado uma pasta <b>Build</b> onde vão estar
+          os arquivos compilados.
+        </p>
+        <p>
+          Antes de fazer subir, é necessário adicionar as
+          <b>variaveis de ambiente</b> que vão estar no arquivo
+          <b>ecosystem.config.js</b>. Após definir as variaveis de ambiente,
+          podemos rodar o comando
+          <code>`pm2 start ecosystem.config.js`</code> para fazer subir o
+          serviço na porta porta escolhida (default: 3001).
+        </p>
+        <br />
+        <h2 x-text="sections[3].text" x-bind:id="sections[3].href">
+          Logs do Serviço
+        </h2>
+        <p>
+          Em caso de erro ou falha durante o funcionamento, na pasta multipla é
+          criado um aquivo <b>app.log</b> que registra os logs da aplicação
+        </p>
+      </section>
+    </main>
+    <!-- Main End -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
